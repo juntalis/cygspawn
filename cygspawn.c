@@ -307,7 +307,7 @@ static wchar_t *checkdefs(wchar_t *str, int *idx)
             i++;
         }
     }
-    if (iswalnum(*str) && (ml = wcschr(str, L'='))) {
+    if ((iswalnum(*str) || *str == L'_') && (ml = wcschr(str, L'='))) {
         if (*(ml + 1) == L'"')
             ++ml;
         /* Special case for environment variables */
@@ -572,13 +572,8 @@ wchar_t *getpexe(DWORD pid)
     h = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, ppid);
     if (h == 0)
         return 0;
-#if 0
-    if (GetProcessImageFileNameW(h, buf, XPATH_MAX) != 0)
-        pp = xwcsdup(buf);
-#else
     if (GetModuleFileNameExW(h, 0, buf, XPATH_MAX) != 0)
         pp = xwcsdup(buf);
-#endif
     CloseHandle(h);
     return pp;
 }
@@ -593,7 +588,7 @@ static const wchar_t *getcygroot(wchar_t *drive)
         r = getpexe(GetCurrentProcessId());
         if (r != 0) {
             int x;
-            if (wchrimatch(r, L"*\\cygwin\\*\\*", &x) == 0) {
+            if (wchrimatch(r, L"*\\cygwin\\*", &x) == 0) {
                 r[x + 7] = L'\0';
                 if (drive != 0)
                     *drive = towupper(*r);
