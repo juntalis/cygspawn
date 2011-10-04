@@ -460,6 +460,7 @@ static wchar_t *posix2win(const wchar_t *root, const wchar_t *str)
         int   mcmatch = 0;
         int   dx = 0;
         wchar_t *pp;
+        wchar_t  eq[2] = { 0, 0};
         const wchar_t  *ep = 0;
         const wchar_t **mp = pathmatches;
 
@@ -467,9 +468,11 @@ static wchar_t *posix2win(const wchar_t *root, const wchar_t *str)
             /* Special case for environment variables */
             if (dx == 0) {
                 ep = pa[i];
+                eq[0] = *(pp - 1);
                 *(pp - 1) = L'\0';
             }
             else {
+                eq[0] = L'=';
                 so[0] = *(pa[i]);
                 ep = optmatch[dx];
             }
@@ -499,7 +502,7 @@ static wchar_t *posix2win(const wchar_t *root, const wchar_t *str)
                     if (dx)
                         pa[i] = xwcsvcat(so, ep, wp, lp, 0);
                     else
-                        pa[i] = xwcsvcat(ep, L"=", wp, lp, 0);
+                        pa[i] = xwcsvcat(ep, eq, wp, lp, 0);
                 }
                 else
                     pa[i] = xwcsvcat(wp, lp, 0);
