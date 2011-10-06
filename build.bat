@@ -27,11 +27,11 @@ if /i "%~1" == "/gui" (
 )
 if /i "%~1" == "/x64" (
     set "MACHINE=X64"
-    set "CFLAGS=-DWIN64 -D_WIN64 -W3"
+    set "CFLAGS=-DWIN64 -D_WIN64 -W3 %CFLAGS%"
 ) else (
     set "MACHINE=X86"
-    set "CFLAGS=-W3"
+    set "CFLAGS=-W3 %CFLAGS%"
 )
 cl -MD -DWIN32 -D_WIN32 %CFLAGS% -DUNICODE -D_UNICODE -D%SUBSYTEM% -c cygspawn.c
-rc /l 0x409 /d "NDEBUG" cygspawn.rc
-link /OPT:REF /INCREMENTAL:NO /SUBSYSTEM:%SUBSYTEM% /MACHINE:%MACHINE% cygspawn.obj cygspawn.res kernel32.lib psapi.lib %EXTRA_LIBS% /OUT:%OUTFILE%
+rc /l 0x409 /d "NDEBUG" %RCFLAGS% cygspawn.rc
+link /OPT:REF /INCREMENTAL:NO /SUBSYSTEM:%SUBSYTEM% /MACHINE:%MACHINE% %LDFLAGS% cygspawn.obj cygspawn.res kernel32.lib psapi.lib %EXTRA_LIBS% /OUT:%OUTFILE%
