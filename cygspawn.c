@@ -175,6 +175,24 @@ static wchar_t *xwcsndup(const wchar_t *s, size_t size)
     return p;
 }
 
+static wchar_t *xwcsrbrk(const wchar_t *s, const wchar_t *set)
+{
+    const wchar_t *p = s;
+
+    while (*p != 0)
+        p++;
+    while (s <= p) {
+        const wchar_t *q = set;
+        while (*q != 0) {
+            if (*p == *q)
+                return (wchar_t *)p;
+            q++;
+        }
+        p--;
+    }
+    return 0;
+}
+
 static wchar_t *xgetenv(const wchar_t *s)
 {
     wchar_t *d;
