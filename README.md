@@ -18,4 +18,4 @@ Cygpath utility does that automatically by replacing each posix
 argument that contains path element with its windows equvalent.
 It also replaces paths in the environment variable values making
 sure the miltiple path elemnts are correctly separated using
-windows path separator ';'.
+windows path separator `;`.
