@@ -86,6 +86,12 @@ static const wchar_t *pathmatches[] = {
     0
 };
 
+/**
+ * Some common options for Microsoft compiler and linker
+ * which start with slash.
+ * If we found one of these we won't treat the option
+ * as path element. Eg, /I will be option /Ia will be path.
+ */
 static const wchar_t *optmatch[] = {
     0,
     L"I",
@@ -100,7 +106,7 @@ static const wchar_t *optmatch[] = {
     L"FR",
     L"Tc",
     L"Tp",
-    0,
+    0, /* Separator for case sensitivity. Rest are case insensitive */
     L"BASE:@",
     L"IDLOUT:",
     L"IMPLIB:",
@@ -117,6 +123,9 @@ static const wchar_t *optmatch[] = {
     0
 };
 
+/**
+ * Maloc that causes process exit in case of ENOMEM
+ */
 static void *xmalloc(size_t size)
 {
     void *p = calloc(size, 1);
