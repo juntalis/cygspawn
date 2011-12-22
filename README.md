@@ -8,6 +8,7 @@ utility which translates cygwin (posix) paths to their windows
 equivalents from shell.
 
 For example a standard usage would be:
+
     program.exe "--f1=`cygpath -w /tmp/f1`" "`cygpath -w /tmp/f1`" ...
   
 This can become very complex and it requires that the shell
